@@ -1,10 +1,18 @@
+# <div align="center"> InvestSky StockApp</div>
+
+<p align="center">A Responsive React Native Application of an Stock app where the user has access toa list of stocks, and get some information about them.</p>
+
 # Getting Started
 
-> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Step 1: 🚀 Installation
 
-## Step 1: Start the Metro Server
+`````
+$ git clone https://github.com/MatheusDevios/StockApp.git
+$ cd InvestSkyStockApp
+$ npm install
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+
+## Start the Metro Server
 
 To start Metro, run the following command from the _root_ of your React Native project:
 
@@ -32,4 +40,4 @@ npm run ios
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-````
+`````
