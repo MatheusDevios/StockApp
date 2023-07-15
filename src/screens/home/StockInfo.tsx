@@ -1,6 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet} from 'react-native';
-import {MainStackParamList} from '../../../App';
+import {MainStackParamList} from '../../navigators/TabNav';
+// import {MainStackParamList} from '../../../App';
 
 type Props = NativeStackScreenProps<MainStackParamList, 'Stock'>;
 

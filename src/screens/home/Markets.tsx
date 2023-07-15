@@ -3,12 +3,13 @@ import React from 'react';
 import StockCard from '../../components/StockCard';
 import Menu from '../../components/Menu';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {MainStackParamList} from '../../../App';
+// import {MainStackParamList} from '../../../App';
 import MarketCategory from './MarketCategory';
+import {MainStackParamList} from '../../navigators/TabNav';
 
-type Props = NativeStackScreenProps<MainStackParamList, 'Markets'>;
+type Props = NativeStackScreenProps<MainStackParamList>;
 
-const Markets: React.FC<Props> = ({navigation}) => {
+const Markets = ({navigation}: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.screenTitle}>Markets</Text>
@@ -26,6 +27,9 @@ const Markets: React.FC<Props> = ({navigation}) => {
           price={100}
           percentageGain={0.38}
           onPress={(name: string) => navigation.navigate('Stock', {name})}
+          // onPress={() =>
+          //   navigation.navigate('Portfolio', {screen: 'Stock', params: {name}})
+          // }
         />
         <StockCard
           stockSymbol="BC"
@@ -52,7 +56,7 @@ const Markets: React.FC<Props> = ({navigation}) => {
           onPress={(name: string) => navigation.navigate('Stock', {name})}
         />
       </ScrollView>
-      <Menu />
+      {/* <Menu /> */}
     </SafeAreaView>
   );
 };
