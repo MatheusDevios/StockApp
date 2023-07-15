@@ -13,7 +13,11 @@ const MarketStack = createNativeStackNavigator<MarketStackParams>();
 
 const MarketStackScreen = () => {
   return (
-    <MarketStack.Navigator initialRouteName="Markets">
+    <MarketStack.Navigator
+      initialRouteName="Markets"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <MarketStack.Screen name="Markets" component={Markets} />
       <MarketStack.Screen name="Stock" component={StockInfo} />
     </MarketStack.Navigator>
