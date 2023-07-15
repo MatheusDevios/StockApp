@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 
 export const Portfolio = () => {
   return (
-    <View>
+    <SafeAreaView>
       <Text>Portfolio</Text>
-    </View>
+    </SafeAreaView>
   );
 };
