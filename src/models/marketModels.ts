@@ -1,11 +1,15 @@
-export type searchParams = {
-  stockSymbol: string;
+export type GraphParams = {
   name: string;
-  graph: string;
-  price: number;
+  symbol: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
   moviment: boolean;
-  percentageGain: number;
-}[];
+  price_change_percentage_24h: number;
+  sparkline_in_7d: {
+    price: number[];
+  };
+};
 
 export let routesInitialValue = [
   {
@@ -25,20 +29,49 @@ export let routesInitialValue = [
     title: 'Bond Market',
   },
 ];
+export interface StockCardParams {
+  name: string;
+  symbol: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h: number;
+  sparkline_in_7d: {
+    price: number[];
+  };
+  onPress: (item: SendStockParams) => void;
+}
 
 export type MarketStackParams = {
   Markets: undefined;
-  Stock: {
-    name: string;
+  Stock: StockCardParams;
+};
+
+export type SendStockParams = {
+  name: string;
+  symbol: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h: number;
+  sparkline_in_7d: {
+    price: number[];
   };
 };
 
-export interface StockCardParams {
-  stockSymbol: string;
+export type DataParams = {
   name: string;
-  graph: string;
-  price: number;
-  moviment: boolean;
-  percentageGain: number;
-  onPress: (name: string) => void;
-}
+  symbol: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h: number;
+  sparkline_in_7d: {
+    price: number[];
+  };
+};
+
+export type LineChartParams = {
+  priceData: number[];
+  current_price: number;
+};

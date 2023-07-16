@@ -3,17 +3,36 @@ import {View, Text, StyleSheet} from 'react-native';
 import BackButtom from '../../components/BackButtom';
 import {MainStackParams} from '../../models/navModels';
 import Graph from '../../components/Graph';
-// import {MainStackParamList} from '../../../App';
 
 type Props = NativeStackScreenProps<MainStackParams, 'Stock'>;
 
-const StockInfo: React.FC<Props> = ({route}) => {
-  const name = route.params.name;
+const StockInfo = ({route}: Props) => {
+  const {
+    name,
+    symbol,
+    image,
+    current_price,
+    market_cap,
+    price_change_percentage_24h,
+    sparkline_in_7d,
+  } = route.params;
+
+  const moviment = price_change_percentage_24h < 0 ? false : true;
+
   return (
     <View style={styles.container}>
       <BackButtom />
-      <Text style={styles.screenTitle}>{name}</Text>
-      <Graph />
+      <Graph
+        name={name}
+        image={image}
+        symbol={symbol}
+        current_price={current_price}
+        moviment={moviment}
+        price_change_percentage_24h={price_change_percentage_24h}
+        sparkline_in_7d={sparkline_in_7d}
+        market_cap={market_cap}
+      />
+      <Text style={styles.screenTitle}>Stock Info</Text>
     </View>
   );
 };

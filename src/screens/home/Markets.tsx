@@ -5,18 +5,20 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import StockCard from '../../components/StockCard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import MenuIcon from '../../components/Icons/MenuIcon';
 import SearchBar from '../../components/SearchBar';
 import {TabBar, TabView} from 'react-native-tab-view';
-import {JuniorStockData} from '../../data/JuniorStockData';
-import {MainStockData} from '../../data/MainStockData';
-import {FxRatesData} from '../../data/FxRatesData';
-import {BondMarketData} from '../../data/BondMarket';
-import {routesInitialValue, searchParams} from '../../models/marketModels';
+import {
+  DataParams,
+  SendStockParams,
+  routesInitialValue,
+} from '../../models/marketModels';
 import {MainStackParams} from '../../models/navModels';
+import {getMarketData} from '../../services/cryptoService';
+import {SAMPLE_DATA} from '../../data/CoinsData';
 
 type Props = NativeStackScreenProps<MainStackParams>;
 
@@ -24,65 +26,81 @@ const Markets = ({navigation}: Props) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState<number>(1);
   const [routes] = useState(routesInitialValue);
-  const [searchJunior, setSearchJunior] = useState<searchParams>(
-    JuniorStockData.map(item => item),
+  const [mainData, setMainData] = useState<DataParams[] | undefined>([]);
+  const [searchJunior, setSearchJunior] = useState<DataParams[] | undefined>(
+    [],
   );
-  const [searchMain, setSearchMain] = useState<searchParams>(
-    MainStockData.map(item => item),
-  );
-  const [searchFx, setSearchFx] = useState<searchParams>(
-    FxRatesData.map(item => item),
-  );
-  const [searchBond, setSearchBond] = useState<searchParams>(
-    BondMarketData.map(item => item),
-  );
+  const [searchMain, setSearchMain] = useState<DataParams[] | undefined>([]);
+  const [searchFx, setSearchFx] = useState<DataParams[] | undefined>([]);
+  const [searchBond, setSearchBond] = useState<DataParams[] | undefined>([]);
 
-  const stockCardContent = searchJunior.map((item, index) => (
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      const marketData = await getMarketData();
+      setMainData(marketData);
+      //I'm using slice to limit the number of items in the array,
+      //and not to overload with api requests neither the application nor the CoingeckoAPI
+      //as the API has request limits
+      //but in a real world scenario, I would request the data separatly for each tab.
+      setSearchJunior(marketData?.slice(0, 19));
+      setSearchMain(marketData?.slice(20, 39));
+      setSearchFx(marketData?.slice(40, 59));
+      setSearchBond(marketData?.slice(60, 79));
+    };
+
+    fetchMarketData();
+  }, []);
+
+  const stockCardContent = searchJunior?.map((item, index) => (
     <StockCard
       key={index}
-      stockSymbol={item.stockSymbol}
       name={item.name}
-      graph={item.graph}
-      price={item.price}
-      moviment={item.moviment}
-      percentageGain={item.percentageGain}
-      onPress={(name: string) => navigation.navigate('Stock', {name})}
+      symbol={item.symbol}
+      image={item.image}
+      current_price={item.current_price}
+      market_cap={item.market_cap}
+      price_change_percentage_24h={item.price_change_percentage_24h}
+      sparkline_in_7d={item.sparkline_in_7d}
+      onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
     />
   ));
-  const mainStockCardContent = searchMain.map((item, index) => (
+  const mainStockCardContent = searchMain?.map((item, index) => (
     <StockCard
       key={index}
-      stockSymbol={item.stockSymbol}
       name={item.name}
-      graph={item.graph}
-      price={item.price}
-      moviment={item.moviment}
-      percentageGain={item.percentageGain}
-      onPress={(name: string) => navigation.navigate('Stock', {name})}
+      symbol={item.symbol}
+      image={item.image}
+      current_price={item.current_price}
+      market_cap={item.market_cap}
+      price_change_percentage_24h={item.price_change_percentage_24h}
+      sparkline_in_7d={item.sparkline_in_7d}
+      onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
     />
   ));
-  const fxRatesStockCardContent = searchFx.map((item, index) => (
+  const fxRatesStockCardContent = searchFx?.map((item, index) => (
     <StockCard
       key={index}
-      stockSymbol={item.stockSymbol}
       name={item.name}
-      graph={item.graph}
-      price={item.price}
-      moviment={item.moviment}
-      percentageGain={item.percentageGain}
-      onPress={(name: string) => navigation.navigate('Stock', {name})}
+      symbol={item.symbol}
+      image={item.image}
+      current_price={item.current_price}
+      market_cap={item.market_cap}
+      price_change_percentage_24h={item.price_change_percentage_24h}
+      sparkline_in_7d={item.sparkline_in_7d}
+      onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
     />
   ));
-  const bondMarketStockCardContent = searchBond.map((item, index) => (
+  const bondMarketStockCardContent = searchBond?.map((item, index) => (
     <StockCard
       key={index}
-      stockSymbol={item.stockSymbol}
       name={item.name}
-      graph={item.graph}
-      price={item.price}
-      moviment={item.moviment}
-      percentageGain={item.percentageGain}
-      onPress={(name: string) => navigation.navigate('Stock', {name})}
+      symbol={item.symbol}
+      image={item.image}
+      current_price={item.current_price}
+      market_cap={item.market_cap}
+      price_change_percentage_24h={item.price_change_percentage_24h}
+      sparkline_in_7d={item.sparkline_in_7d}
+      onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
     />
   ));
 
@@ -92,38 +110,46 @@ const Markets = ({navigation}: Props) => {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
         callBackFunc(...args);
-      }, 500);
+      }, 300);
     };
   };
 
   const handleSearchChange = debounce((value: string) => {
     setSearchMain(
-      MainStockData.filter(
-        item =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
-      ),
+      mainData
+        ?.slice(0, 19)
+        .filter(
+          item =>
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.symbol.toLowerCase().includes(value.toLowerCase()),
+        ),
     );
     setSearchJunior(
-      JuniorStockData.filter(
-        item =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
-      ),
+      mainData
+        ?.slice(20, 39)
+        .filter(
+          item =>
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.symbol.toLowerCase().includes(value.toLowerCase()),
+        ),
     );
     setSearchFx(
-      FxRatesData.filter(
-        item =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
-      ),
+      mainData
+        ?.slice(40, 59)
+        .filter(
+          item =>
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.symbol.toLowerCase().includes(value.toLowerCase()),
+        ),
     );
     setSearchBond(
-      BondMarketData.filter(
-        item =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
-      ),
+      mainData
+        ?.slice(60, 79)
+        .filter(
+          item =>
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.symbol.toLowerCase().includes(value.toLowerCase()),
+        ),
     );
   });
 

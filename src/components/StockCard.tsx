@@ -1,31 +1,51 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {StockCardParams} from '../models/marketModels';
+import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {SendStockParams, StockCardParams} from '../models/marketModels';
 
-const StockCard: React.FC<StockCardParams> = ({
-  stockSymbol,
-  name,
-  graph,
-  price,
-  percentageGain,
-  moviment,
-  onPress,
-}) => {
+const StockCard: React.FC<StockCardParams> = props => {
+  const {
+    name,
+    symbol,
+    image,
+    current_price,
+    market_cap,
+    price_change_percentage_24h,
+    sparkline_in_7d,
+    onPress,
+  } = props;
+
+  const stockData: SendStockParams = {
+    name,
+    symbol,
+    image,
+    current_price,
+    market_cap,
+    price_change_percentage_24h,
+    sparkline_in_7d,
+  };
+
+  const moviment = price_change_percentage_24h < 0 ? '#FF3B30' : '#34C759';
+
   return (
-    <TouchableOpacity onPress={() => onPress(name)}>
-      <View style={styles.container}>
-        <View style={styles.nameContainer}>
-          <Text style={styles.simble}>{stockSymbol}</Text>
-          <Text style={styles.name}>{name}</Text>
+    <TouchableOpacity onPress={() => onPress(stockData)}>
+      <View style={styles.itemWrapper}>
+        <View style={styles.leftWrapper}>
+          <Image source={{uri: image}} style={styles.image} />
+          <View style={styles.titlesWrapper}>
+            <Text style={styles.title}>{name}</Text>
+            <Text style={styles.subtitle}>{symbol}</Text>
+          </View>
         </View>
+
         <View style={styles.graphContainer}>
-          <Text style={styles.graph}>{graph}</Text>
+          {/* <Text style={styles.graph}>graph</Text> */}
         </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.price}>${price}</Text>
-          <Text style={{fontSize: 12, color: moviment ? 'green' : 'red'}}>
-            {moviment ? '+' : '-'}
-            {percentageGain}%
+        <View style={styles.rightWrapper}>
+          <Text style={styles.title}>
+            ${current_price.toLocaleString('en-US', {currency: 'USD'})}
+          </Text>
+          <Text style={[styles.percentage, {color: moviment}]}>
+            {price_change_percentage_24h}%
           </Text>
         </View>
       </View>
@@ -34,22 +54,32 @@ const StockCard: React.FC<StockCardParams> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#efefef',
-    padding: 16,
-    marginTop: 8,
+  itemWrapper: {
+    paddingHorizontal: 16,
+    marginTop: 24,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  nameContainer: {
+  leftWrapper: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  simble: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  image: {
+    height: 30,
+    width: 30,
   },
-  name: {
-    fontSize: 10,
-    color: 'gray',
+  titlesWrapper: {
+    marginLeft: 6,
+  },
+  title: {
+    fontSize: 15,
+  },
+  subtitle: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#A9ABB1',
   },
   graphContainer: {
     justifyContent: 'center',
@@ -58,16 +88,12 @@ const styles = StyleSheet.create({
   graph: {
     flex: 1,
   },
-  priceContainer: {
-    alignItems: 'flex-end',
+  rightWrapper: {
     flex: 1,
-  },
-  price: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    alignItems: 'flex-end',
   },
   percentage: {
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 
