@@ -1,10 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet} from 'react-native';
-import {MainStackParamList} from '../../navigators/TabNav';
 import BackButtom from '../../components/BackButtom';
+import {MainStackParams} from '../../models/navModels';
+import Graph from '../../components/Graph';
 // import {MainStackParamList} from '../../../App';
 
-type Props = NativeStackScreenProps<MainStackParamList, 'Stock'>;
+type Props = NativeStackScreenProps<MainStackParams, 'Stock'>;
 
 const StockInfo: React.FC<Props> = ({route}) => {
   const name = route.params.name;
@@ -12,6 +13,7 @@ const StockInfo: React.FC<Props> = ({route}) => {
     <View style={styles.container}>
       <BackButtom />
       <Text style={styles.screenTitle}>{name}</Text>
+      <Graph />
     </View>
   );
 };

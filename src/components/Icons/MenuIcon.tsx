@@ -1,10 +1,7 @@
 import Svg, {Path} from 'react-native-svg';
+import {OnlyColorIconParams} from '../../models/iconsModels';
 
-interface Props {
-  color: string;
-}
-
-function ManuIcon(props: Props) {
+function ManuIcon(props: OnlyColorIconParams) {
   return (
     <Svg viewBox="0 -0.5 25 25" width="30px" height="30px">
       <Path

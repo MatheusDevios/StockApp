@@ -1,11 +1,7 @@
 import Svg, {Path, Rect, SvgUri} from 'react-native-svg';
+import {GeneralIconsParams} from '../../models/iconsModels';
 
-interface Props {
-  color: string;
-  size: number;
-}
-
-function MarketIcon(props: Props) {
+function MarketIcon(props: GeneralIconsParams) {
   return (
     <Svg viewBox="0 -0.5 25 25" width={props.size} height={props.size}>
       <Path

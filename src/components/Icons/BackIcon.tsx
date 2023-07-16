@@ -1,12 +1,8 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import {GeneralIconsParams} from '../../models/iconsModels';
 
-interface Props {
-  color: string;
-  size: number;
-}
-
-function BackIcon(props: Props) {
+function BackIcon(props: GeneralIconsParams) {
   return (
     <Svg viewBox="0 0 512 512" width={props.size} height={props.size}>
       <Path

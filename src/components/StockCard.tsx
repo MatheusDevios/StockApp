@@ -1,17 +1,8 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {StockCardParams} from '../models/marketModels';
 
-interface Props {
-  stockSymbol: string;
-  name: string;
-  graph: string;
-  price: number;
-  moviment: boolean;
-  percentageGain: number;
-  onPress: (name: string) => void;
-}
-
-const StockCard: React.FC<Props> = ({
+const StockCard: React.FC<StockCardParams> = ({
   stockSymbol,
   name,
   graph,

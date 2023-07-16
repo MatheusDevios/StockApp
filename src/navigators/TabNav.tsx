@@ -1,22 +1,13 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MarketStackScreen, {MarketStackParams} from './MarketStack';
+import MarketStackScreen from './MarketStack';
 import {Portfolio} from '../screens/portfolio/Portfolio';
 import News from '../screens/news/News';
-import {NavigatorScreenParams} from '@react-navigation/native';
 import MarketIcon from '../components/Icons/MarketIcon';
 import PortfolioIcon from '../components/Icons/PortfolioIcon';
 import NewsIcon from '../components/Icons/NewsIcon';
+import {MainStackParams} from '../models/navModels';
 
-export type MainStackParamList = {
-  MarketStack: NavigatorScreenParams<MarketStackParams>;
-  Portfolio: undefined;
-  News: undefined;
-  Stock: {
-    name: string;
-  };
-};
-
-const RootStack = createBottomTabNavigator<MainStackParamList>();
+const RootStack = createBottomTabNavigator<MainStackParams>();
 
 const TabNav = () => {
   return (

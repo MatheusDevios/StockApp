@@ -4,12 +4,10 @@ import {
   useWindowDimensions,
   StyleSheet,
   View,
-  Dimensions,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import StockCard from '../../components/StockCard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {MainStackParamList} from '../../navigators/TabNav';
 import MenuIcon from '../../components/Icons/MenuIcon';
 import SearchBar from '../../components/SearchBar';
 import {TabBar, TabView} from 'react-native-tab-view';
@@ -17,53 +15,27 @@ import {JuniorStockData} from '../../data/JuniorStockData';
 import {MainStockData} from '../../data/MainStockData';
 import {FxRatesData} from '../../data/FxRatesData';
 import {BondMarketData} from '../../data/BondMarket';
+import {routesInitialValue, searchParams} from '../../models/marketModels';
+import {MainStackParams} from '../../models/navModels';
 
-type Props = NativeStackScreenProps<MainStackParamList>;
-
-const dimentionsForScreen = Dimensions.get('screen');
-
-export type searchType = {
-  stockSymbol: string;
-  name: string;
-  graph: string;
-  price: number;
-  moviment: boolean;
-  percentageGain: number;
-}[];
+type Props = NativeStackScreenProps<MainStackParams>;
 
 const Markets = ({navigation}: Props) => {
-  const [searchJunior, setSearchJunior] = useState<searchType>(
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState<number>(1);
+  const [routes] = useState(routesInitialValue);
+  const [searchJunior, setSearchJunior] = useState<searchParams>(
     JuniorStockData.map(item => item),
   );
-  const [searchMain, setSearchMain] = useState<searchType>(
+  const [searchMain, setSearchMain] = useState<searchParams>(
     MainStockData.map(item => item),
   );
-  const [searchFx, setSearchFx] = useState<searchType>(
+  const [searchFx, setSearchFx] = useState<searchParams>(
     FxRatesData.map(item => item),
   );
-  const [searchBond, setSearchBond] = useState<searchType>(
+  const [searchBond, setSearchBond] = useState<searchParams>(
     BondMarketData.map(item => item),
   );
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(1);
-  const [routes] = useState([
-    {
-      key: 'mainMarker',
-      title: 'Main Market',
-    },
-    {
-      key: 'juniorMarket',
-      title: 'Junior Market',
-    },
-    {
-      key: 'fxRates',
-      title: 'FX Rates',
-    },
-    {
-      key: 'boundMarket',
-      title: 'Bond Market',
-    },
-  ]);
 
   const stockCardContent = searchJunior.map((item, index) => (
     <StockCard
@@ -114,8 +86,8 @@ const Markets = ({navigation}: Props) => {
     />
   ));
 
-  const debounce = (callBackFunc: any) => {
-    let timer: any;
+  const debounce = (callBackFunc: Function) => {
+    let timer: ReturnType<typeof setTimeout>;
     return function (...args: any[]) {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
@@ -124,25 +96,33 @@ const Markets = ({navigation}: Props) => {
     };
   };
 
-  const handleSearchChange = debounce((value: any) => {
+  const handleSearchChange = debounce((value: string) => {
     setSearchMain(
-      MainStockData.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase()),
+      MainStockData.filter(
+        item =>
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
       ),
     );
     setSearchJunior(
-      JuniorStockData.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase()),
+      JuniorStockData.filter(
+        item =>
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
       ),
     );
     setSearchFx(
-      FxRatesData.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase()),
+      FxRatesData.filter(
+        item =>
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
       ),
     );
     setSearchBond(
-      BondMarketData.filter(item =>
-        item.name.toLowerCase().includes(value.toLowerCase()),
+      BondMarketData.filter(
+        item =>
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.stockSymbol.toLowerCase().includes(value.toLowerCase()),
       ),
     );
   });
@@ -195,7 +175,6 @@ const Markets = ({navigation}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: dimentionsForScreen.height,
     flex: 1,
   },
   viewContainer: {

@@ -1,13 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Markets from '../screens/home/Markets';
 import StockInfo from '../screens/home/StockInfo';
-
-export type MarketStackParams = {
-  Markets: undefined;
-  Stock: {
-    name: string;
-  };
-};
+import {MarketStackParams} from '../models/marketModels';
 
 const MarketStack = createNativeStackNavigator<MarketStackParams>();
 

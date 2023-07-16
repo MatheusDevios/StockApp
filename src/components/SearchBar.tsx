@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import SearchIcon from './Icons/SearchIcon';
+import {SearchBarParams} from '../models/searchBarModels';
 
-type Props = {
-  handleSearchChange: (e: any) => void;
-};
-
-const SearchBar: React.FC<Props> = ({handleSearchChange}) => {
+const SearchBar: React.FC<SearchBarParams> = ({handleSearchChange}) => {
   return (
     <View style={styles.container}>
       <SearchIcon color="white" />
@@ -29,7 +25,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    height: 45,
+    height: 40,
     borderRadius: 16,
     marginBottom: 12,
   },

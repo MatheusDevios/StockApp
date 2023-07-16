@@ -1,12 +1,9 @@
 import Svg, {G, Path} from 'react-native-svg';
+import {OnlyColorIconParams} from '../../models/iconsModels';
 
-interface Props {
-  color: string;
-}
-
-function SearchIcon(props: Props) {
+function SearchIcon(props: OnlyColorIconParams) {
   return (
-    <Svg viewBox="0 -14.5 104 104" width="40" height="50">
+    <Svg viewBox="0 -22.5 120 120" width="40" height="50">
       <G>
         <Path
           fill="#231F20"
