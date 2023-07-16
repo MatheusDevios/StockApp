@@ -18,8 +18,7 @@ const StockInfo: React.FC<Props> = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 6,
-    marginTop: 14,
+    marginTop: 28,
   },
   screenTitle: {
     fontSize: 24,

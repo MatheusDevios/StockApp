@@ -1,17 +1,28 @@
-import {ScrollView, Text, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  useWindowDimensions,
+  StyleSheet,
+  View,
+  Dimensions,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import StockCard from '../../components/StockCard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MarketCategory from './MarketCategory';
 import {MainStackParamList} from '../../navigators/TabNav';
-import {marketCategoryData} from '../../data/MarketCategoryData';
-import {stockData} from '../../data/StockData';
 import MenuIcon from '../../components/Icons/MenuIcon';
 import SearchBar from '../../components/SearchBar';
+import {TabBar, TabView} from 'react-native-tab-view';
+import {JuniorStockData} from '../../data/JuniorStockData';
+import {MainStockData} from '../../data/MainStockData';
+import {FxRatesData} from '../../data/FxRatesData';
+import {BondMarketData} from '../../data/BondMarket';
 
 type Props = NativeStackScreenProps<MainStackParamList>;
 
-type searchType = {
+const dimentionsForScreen = Dimensions.get('screen');
+
+export type searchType = {
   stockSymbol: string;
   name: string;
   graph: string;
@@ -21,23 +32,76 @@ type searchType = {
 }[];
 
 const Markets = ({navigation}: Props) => {
-  const [search, setSearch] = useState<searchType>([]);
-  const [valueSearch, setValueSearch] = useState('');
+  const [searchJunior, setSearchJunior] = useState<searchType>(
+    JuniorStockData.map(item => item),
+  );
+  const [searchMain, setSearchMain] = useState<searchType>(
+    MainStockData.map(item => item),
+  );
+  const [searchFx, setSearchFx] = useState<searchType>(
+    FxRatesData.map(item => item),
+  );
+  const [searchBond, setSearchBond] = useState<searchType>(
+    BondMarketData.map(item => item),
+  );
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(1);
+  const [routes] = useState([
+    {
+      key: 'mainMarker',
+      title: 'Main Market',
+    },
+    {
+      key: 'juniorMarket',
+      title: 'Junior Market',
+    },
+    {
+      key: 'fxRates',
+      title: 'FX Rates',
+    },
+    {
+      key: 'boundMarket',
+      title: 'Bond Market',
+    },
+  ]);
 
-  useEffect(() => {
-    setSearch(stockData.map(item => item));
-  }, []);
-
-  const categoryContent = marketCategoryData.map((item, index) => (
-    <MarketCategory
+  const stockCardContent = searchJunior.map((item, index) => (
+    <StockCard
       key={index}
+      stockSymbol={item.stockSymbol}
       name={item.name}
-      color={item.color}
-      weight={item.weight}
+      graph={item.graph}
+      price={item.price}
+      moviment={item.moviment}
+      percentageGain={item.percentageGain}
+      onPress={(name: string) => navigation.navigate('Stock', {name})}
     />
   ));
-
-  const stockCardContent = search.map((item, index) => (
+  const mainStockCardContent = searchMain.map((item, index) => (
+    <StockCard
+      key={index}
+      stockSymbol={item.stockSymbol}
+      name={item.name}
+      graph={item.graph}
+      price={item.price}
+      moviment={item.moviment}
+      percentageGain={item.percentageGain}
+      onPress={(name: string) => navigation.navigate('Stock', {name})}
+    />
+  ));
+  const fxRatesStockCardContent = searchFx.map((item, index) => (
+    <StockCard
+      key={index}
+      stockSymbol={item.stockSymbol}
+      name={item.name}
+      graph={item.graph}
+      price={item.price}
+      moviment={item.moviment}
+      percentageGain={item.percentageGain}
+      onPress={(name: string) => navigation.navigate('Stock', {name})}
+    />
+  ));
+  const bondMarketStockCardContent = searchBond.map((item, index) => (
     <StockCard
       key={index}
       stockSymbol={item.stockSymbol}
@@ -61,13 +125,42 @@ const Markets = ({navigation}: Props) => {
   };
 
   const handleSearchChange = debounce((value: any) => {
-    setValueSearch(value);
-    setSearch(
-      stockData.filter(item =>
+    setSearchMain(
+      MainStockData.filter(item =>
+        item.name.toLowerCase().includes(value.toLowerCase()),
+      ),
+    );
+    setSearchJunior(
+      JuniorStockData.filter(item =>
+        item.name.toLowerCase().includes(value.toLowerCase()),
+      ),
+    );
+    setSearchFx(
+      FxRatesData.filter(item =>
+        item.name.toLowerCase().includes(value.toLowerCase()),
+      ),
+    );
+    setSearchBond(
+      BondMarketData.filter(item =>
         item.name.toLowerCase().includes(value.toLowerCase()),
       ),
     );
   });
+
+  const handleRenderScene = ({route}: any) => {
+    switch (route.key) {
+      case 'mainMarker':
+        return <ScrollView>{mainStockCardContent}</ScrollView>;
+      case 'juniorMarket':
+        return <ScrollView>{stockCardContent}</ScrollView>;
+      case 'fxRates':
+        return <ScrollView>{fxRatesStockCardContent}</ScrollView>;
+      case 'boundMarket':
+        return <ScrollView>{bondMarketStockCardContent}</ScrollView>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -75,11 +168,26 @@ const Markets = ({navigation}: Props) => {
         <MenuIcon color="black" />
         <Text style={styles.screenTitle}>Markets</Text>
         <SearchBar handleSearchChange={handleSearchChange} />
-        <ScrollView horizontal={true} style={styles.marketContainer}>
-          {categoryContent}
-        </ScrollView>
       </View>
-      <ScrollView style={styles.stockScroll}>{stockCardContent}</ScrollView>
+      <TabView
+        navigationState={{index, routes}}
+        renderScene={handleRenderScene}
+        onIndexChange={setIndex}
+        initialLayout={{width: layout.width}}
+        animationEnabled={true}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            style={{backgroundColor: '#005BEA'}}
+            scrollEnabled={true}
+            renderLabel={({route, color}) => (
+              <Text style={{color: color, fontWeight: 'bold'}}>
+                {route.title}
+              </Text>
+            )}
+          />
+        )}
+      />
       <View style={{height: 95}} />
     </View>
   );
@@ -87,14 +195,15 @@ const Markets = ({navigation}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
+    height: dimentionsForScreen.height,
     flex: 1,
   },
   viewContainer: {
     paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 32,
     backgroundColor: '#005BEA',
   },
-  stockScroll: {},
   screenTitle: {
     fontSize: 24,
     marginTop: 8,
@@ -110,6 +219,9 @@ const styles = StyleSheet.create({
   marketContainer: {
     marginTop: 14,
     marginBottom: 14,
+  },
+  stockContainer: {
+    backgroundColor: '#005BEA',
   },
 });
 

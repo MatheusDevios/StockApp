@@ -8,7 +8,7 @@ export type StockCategory = {
   onPress: () => void;
 };
 
-export const stockData: StockCategory[] = [
+export const JuniorStockData: StockCategory[] = [
   {
     name: 'Dow jone Industry',
     stockSymbol: 'DJIA',

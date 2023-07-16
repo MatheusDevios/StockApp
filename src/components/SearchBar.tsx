@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import SearchIcon from './Icons/SearchIcon';
 
@@ -11,10 +11,10 @@ const SearchBar: React.FC<Props> = ({handleSearchChange}) => {
     <View style={styles.container}>
       <SearchIcon color="white" />
       <TextInput
+        style={styles.searchInput}
         onChangeText={newText => {
           handleSearchChange(newText);
         }}
-        // onFocus={handleSearchChange}
         placeholder="Search Products.."
       />
     </View>
@@ -26,21 +26,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: 10,
     alignItems: 'center',
-    marginRight: 20,
     display: 'flex',
     flexDirection: 'row',
-    width: 'auto',
+    width: '100%',
     height: 45,
     borderRadius: 16,
-    boxShadow: '0 3px 24px rgb(0 0 0 / 4%)',
-    border: '1px solid #f0f2f3',
+    marginBottom: 12,
   },
   searchIcon: {},
   searchInput: {
-    width: '100%',
+    width: '85%',
     height: '100%',
     borderRadius: 12,
-    fontSize: 'medium',
   },
 });
 
