@@ -11,6 +11,10 @@ $ git clone https://github.com/MatheusDevios/StockApp.git
 $ cd InvestSkyStockApp
 $ npm install
 
+You might also need to install pod dependencies into the cd ios.
+
+$ cd ios
+$ pod install
 
 ## Start the Metro Server
 
@@ -23,6 +27,9 @@ npm start
 ## Step 2: Start your Application
 
 Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+
+
+You can follow the metro instructions or follow the below steps.
 
 ### For Android
 
@@ -37,7 +44,10 @@ npm run android
 npm run ios
 
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+
+This is one way to run your app — you can also run it directly from within Android Studio and Xcode, respectively.
 `````
+
+
