@@ -7,7 +7,16 @@ import {
 
 export type MainStackParams = {
   MarketStack: NavigatorScreenParams<MarketStackParams>;
-  Portfolio: undefined;
+  PortfolioStack: PortfolioStackParams;
   News: undefined;
   Stock: SendStockParams;
+};
+
+export type PortfolioStackParams = {
+  Portfolio: undefined;
+  Stock: StockCardParams;
+};
+
+export type TimeNavigationBarParams = {
+  stockData: number[];
 };

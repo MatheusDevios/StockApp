@@ -9,6 +9,7 @@ const StockCard: React.FC<StockCardParams> = props => {
     image,
     current_price,
     market_cap,
+    price_change_24h,
     price_change_percentage_24h,
     sparkline_in_7d,
     onPress,
@@ -19,6 +20,7 @@ const StockCard: React.FC<StockCardParams> = props => {
     symbol,
     image,
     current_price,
+    price_change_24h,
     market_cap,
     price_change_percentage_24h,
     sparkline_in_7d,
@@ -38,7 +40,10 @@ const StockCard: React.FC<StockCardParams> = props => {
         </View>
 
         <View style={styles.graphContainer}>
-          {/* <Text style={styles.graph}>graph</Text> */}
+          <Image
+            source={require('../assets/lineGraph.png')}
+            style={styles.graph}
+          />
         </View>
         <View style={styles.rightWrapper}>
           <Text style={styles.title}>
@@ -87,6 +92,8 @@ const styles = StyleSheet.create({
   },
   graph: {
     flex: 1,
+    height: 10,
+    width: 70,
   },
   rightWrapper: {
     flex: 1,

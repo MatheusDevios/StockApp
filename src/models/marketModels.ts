@@ -5,6 +5,7 @@ export type GraphParams = {
   current_price: number;
   market_cap: number;
   moviment: boolean;
+  price_change_24h: number;
   price_change_percentage_24h: number;
   sparkline_in_7d: {
     price: number[];
@@ -35,6 +36,7 @@ export interface StockCardParams {
   image: string;
   current_price: number;
   market_cap: number;
+  price_change_24h: number;
   price_change_percentage_24h: number;
   sparkline_in_7d: {
     price: number[];
@@ -53,6 +55,7 @@ export type SendStockParams = {
   image: string;
   current_price: number;
   market_cap: number;
+  price_change_24h: number;
   price_change_percentage_24h: number;
   sparkline_in_7d: {
     price: number[];
@@ -65,6 +68,7 @@ export type DataParams = {
   image: string;
   current_price: number;
   market_cap: number;
+  price_change_24h: number;
   price_change_percentage_24h: number;
   sparkline_in_7d: {
     price: number[];

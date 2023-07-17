@@ -1,11 +1,11 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MarketStackScreen from './MarketStack';
-import {Portfolio} from '../screens/portfolio/Portfolio';
 import News from '../screens/news/News';
 import MarketIcon from '../components/Icons/MarketIcon';
 import PortfolioIcon from '../components/Icons/PortfolioIcon';
 import NewsIcon from '../components/Icons/NewsIcon';
 import {MainStackParams} from '../models/navModels';
+import PortfolioStackScreen from './PortfolioStack';
 
 const RootStack = createBottomTabNavigator<MainStackParams>();
 
@@ -17,7 +17,7 @@ const TabNav = () => {
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          bottom: 10,
+          bottom: 5,
           left: 10,
           right: 10,
           elevation: 0,
@@ -31,8 +31,8 @@ const TabNav = () => {
         tabBarInactiveTintColor: 'darkgray',
       }}>
       <RootStack.Screen
-        name="Portfolio"
-        component={Portfolio}
+        name="PortfolioStack"
+        component={PortfolioStackScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <PortfolioIcon color={color} size={size} />

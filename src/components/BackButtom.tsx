@@ -8,7 +8,7 @@ const BackButtom = () => {
     <View style={styles.container}>
       <TouchableHighlight
         style={styles.backButton}
-        underlayColor="#f0ddcc"
+        underlayColor="#E5E5E5"
         onPress={() => {
           navigation.goBack();
         }}>
@@ -21,9 +21,14 @@ const BackButtom = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    margin: 8,
+    marginLeft: 16,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: 'lightgray',
   },
   backButton: {
-    borderRadius: 8,
+    borderRadius: 20,
     width: 40,
     height: 40,
     justifyContent: 'center',
