@@ -18,7 +18,6 @@ import {
 } from '../../models/marketModels';
 import {MainStackParams} from '../../models/navModels';
 import {getMarketData} from '../../services/cryptoService';
-import {SAMPLE_DATA} from '../../data/CoinsData';
 
 type Props = NativeStackScreenProps<MainStackParams>;
 
@@ -26,13 +25,11 @@ const Markets = ({navigation}: Props) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState<number>(1);
   const [routes] = useState(routesInitialValue);
-  const [mainData, setMainData] = useState<DataParams[] | undefined>([]);
-  const [searchJunior, setSearchJunior] = useState<DataParams[] | undefined>(
-    [],
-  );
-  const [searchMain, setSearchMain] = useState<DataParams[] | undefined>([]);
-  const [searchFx, setSearchFx] = useState<DataParams[] | undefined>([]);
-  const [searchBond, setSearchBond] = useState<DataParams[] | undefined>([]);
+  const [mainData, setMainData] = useState<DataParams[]>([]);
+  const [searchJunior, setSearchJunior] = useState<DataParams[]>([]);
+  const [searchMain, setSearchMain] = useState<DataParams[]>([]);
+  const [searchFx, setSearchFx] = useState<DataParams[]>([]);
+  const [searchBond, setSearchBond] = useState<DataParams[]>([]);
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -59,6 +56,7 @@ const Markets = ({navigation}: Props) => {
       image={item.image}
       current_price={item.current_price}
       market_cap={item.market_cap}
+      price_change_24h={item.price_change_24h}
       price_change_percentage_24h={item.price_change_percentage_24h}
       sparkline_in_7d={item.sparkline_in_7d}
       onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
@@ -72,6 +70,7 @@ const Markets = ({navigation}: Props) => {
       image={item.image}
       current_price={item.current_price}
       market_cap={item.market_cap}
+      price_change_24h={item.price_change_24h}
       price_change_percentage_24h={item.price_change_percentage_24h}
       sparkline_in_7d={item.sparkline_in_7d}
       onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
@@ -85,6 +84,7 @@ const Markets = ({navigation}: Props) => {
       image={item.image}
       current_price={item.current_price}
       market_cap={item.market_cap}
+      price_change_24h={item.price_change_24h}
       price_change_percentage_24h={item.price_change_percentage_24h}
       sparkline_in_7d={item.sparkline_in_7d}
       onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
@@ -98,6 +98,7 @@ const Markets = ({navigation}: Props) => {
       image={item.image}
       current_price={item.current_price}
       market_cap={item.market_cap}
+      price_change_24h={item.price_change_24h}
       price_change_percentage_24h={item.price_change_percentage_24h}
       sparkline_in_7d={item.sparkline_in_7d}
       onPress={(stock: SendStockParams) => navigation.navigate('Stock', stock)}
@@ -117,7 +118,7 @@ const Markets = ({navigation}: Props) => {
   const handleSearchChange = debounce((value: string) => {
     setSearchMain(
       mainData
-        ?.slice(0, 19)
+        ?.slice(20, 39)
         .filter(
           item =>
             item.name.toLowerCase().includes(value.toLowerCase()) ||
@@ -126,7 +127,7 @@ const Markets = ({navigation}: Props) => {
     );
     setSearchJunior(
       mainData
-        ?.slice(20, 39)
+        ?.slice(0, 19)
         .filter(
           item =>
             item.name.toLowerCase().includes(value.toLowerCase()) ||
