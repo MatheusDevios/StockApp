@@ -1,19 +1,31 @@
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
-import {LineChartParams} from '../models/marketModels';
+import {LineChartParams} from '../../models/marketModels';
+import {useSelector, useDispatch} from 'react-redux';
+import {useEffect, useState} from 'react';
+import {AppDispatch, RootState} from '../../redux/store';
+import {changeTime} from '../../redux/timeManagerSlicer';
 
 const LineChartComponent: React.FC<LineChartParams> = props => {
   const {current_price, priceData} = props;
+  const dispatch: AppDispatch = useDispatch();
+  let graphLabelSize =
+    current_price >= 10000 ? 9 : current_price >= 1000 ? 10.5 : 12;
+  const stockData = useSelector((state: RootState) => state.timeManager.items);
 
   const line = {
     labels: [],
     datasets: [
       {
-        data: priceData,
+        data: stockData.length > 0 ? stockData : priceData,
         color: (opacity = 1) => `rgba(255,255,255, ${opacity})`,
       },
     ],
   };
+
+  useEffect(() => {
+    dispatch(changeTime({time: '1M', stocks: priceData}));
+  }, []);
 
   return (
     <View>
@@ -27,9 +39,10 @@ const LineChartComponent: React.FC<LineChartParams> = props => {
           backgroundGradientFrom: '#005BEA',
           backgroundGradientTo: '#005BEA',
           propsForLabels: {
-            fontSize: current_price > 1000 ? 9 : 12,
+            fontSize: graphLabelSize,
             fontWeight: 'bold',
           },
+          // color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
             borderRadius: 16,
@@ -38,6 +51,7 @@ const LineChartComponent: React.FC<LineChartParams> = props => {
         bezier
         style={{
           marginVertical: 8,
+          borderRadius: 3,
         }}
       />
     </View>
